@@ -55,7 +55,7 @@ int main(){
 					printf("Sold out !\n");
 					break;
 				}
-				//get current time
+				//get current time to send to system
 				time(&rawtime);
 		    	currentTime = localtime(&rawtime);
 				
@@ -92,6 +92,7 @@ int main(){
 				}
 				printf("System reply: %s\n", replyMessage);
 
+				//replenish commodity if <= 3
 				if(commodity.stock[commodity_bought] <= 3){
 					printf("Receiving commodity\n");
 					sleep(5);

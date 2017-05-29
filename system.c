@@ -27,6 +27,7 @@ int main(){
     	printf("Create socket failed !\n");
     	return 0;
     }
+    
     memset(&serv_addr, '0', sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -53,7 +54,7 @@ int main(){
     			return 1;
     		}
 
-    		//read from socket
+    		//read purchased commodity information from socket
     		clientMessage = (char *)malloc(100 *(sizeof(char)));
     		invent = (char *)malloc(100 *(sizeof(char)));
     		for(;;){
@@ -75,6 +76,7 @@ int main(){
     				printf("History file doesn't exist !\n");
     			}
 
+    			//move to end of history file to write new line
     			fseek(historyFile, 0, SEEK_END);
     			fprintf(historyFile, "%s\t%s\t%s/%s/%s %s:%s:%s\n", machineID, brandName, date, month, year, hour, minute, second);
     			fclose(historyFile);
@@ -83,6 +85,7 @@ int main(){
     			if((inventoryFile = fopen("inventory.txt", "r+")) == NULL){
     				printf("Inventory file doesn't exist !\n");
     			}
+    			//read line from file
     			while((fgets(invent, 100, inventoryFile)) != NULL){
     				inventMachineID = strtok(invent, ",");
     				inventBrandName = strtok(NULL, ",");
@@ -113,7 +116,7 @@ int main(){
     				write(connfd, error, strlen(error));
     			}
 
-    			//check inventory figures
+    			//check inventory figures to replenish if <= 3
     			fseek(inventoryFile, 0, SEEK_SET);
     			while(1){
     				if((fgets(invent, 100, inventoryFile)) == NULL) break;
@@ -132,7 +135,6 @@ int main(){
     							if(isdigit((int)character)){
     								fseek(inventoryFile, -1, SEEK_CUR);
     								fprintf(inventoryFile, "%s\n", stock);
-    								//fseek(inventoryFile, 1, SEEK_CUR);
     								printf("Delivering inventory !\n");
 
     								//send message to vending machine to replenish the commodity
