@@ -1,0 +1,9 @@
+1,Coca,10
+1,Milo,10
+1,Lavie,10
+2,Pepsi,10
+2,Revive,10
+2,Nutri,10
+3,Ovantine,10
+3,Sting,10
+3,Aquarius,10
